@@ -13,13 +13,15 @@ class Play extends Phaser.Scene {
         const layers = this.createLayer(map);
 
         this.player = this.createPlayer();
+        this.ennemy = this.createEnnemy();
         this.playerSpeed = 200;
         this.physics.add.collider(this.player, layers.platformsColliders);
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.cameras.main.startFollow(this.player);
 
-        
+        this.ennemy.scale = 0.15;
+        this.ennemy.flipX = 1;
 
 
         this.playerInput = this.input.keyboard.addKeys({
@@ -35,17 +37,7 @@ class Play extends Phaser.Scene {
 
         this.bulletGroup = new bulletGroup(this);
 
-        // this.input.on('pointermove', (pointer) => {
 
-        //     this.player.x = pointer.x;
-
-        // });
-
-        // this.input.on('pointerdown', (pointer) => {
-
-        //     this.bullets.fireBullet(this.player.x, this.player.y);
-
-        // });
         
     }
 
@@ -76,8 +68,15 @@ class Play extends Phaser.Scene {
         return player;
     }
 
+    createEnnemy() {
+        let lifPoint = 10 ;
+        let ennemy = this.physics.add.sprite(200, 300, 'ennemy');
+
+        return ennemy;
+    }
+
     shootBullet(){
-        this.bulletGroup.fireBullet(this.player.x, this.player.y - 20);
+        this.bulletGroup.fireBullet(this.ennemy.x, this.ennemy.y - 10);
     }
 
 
@@ -117,8 +116,7 @@ class Play extends Phaser.Scene {
             }
         }  
         
-    
-        if(this.playerInput.shoot.isDown){
+        if(this.ennemy.lifePoint != 10){
             this.shootBullet();
         }
        
@@ -132,7 +130,7 @@ class bulletGroup extends Phaser.Physics.Arcade.Group {
 
         this.createMultiple({
             classType: Bullet,
-            frameQuantity: 30,
+            frameQuantity: 1,
             active: false,
             visible: false,
             key: 'bullet'
@@ -162,13 +160,13 @@ class Bullet extends Phaser.Physics.Arcade.Sprite{
         this.setActive(true);
         this.setVisible(true);
 
-        this.setVelocity(-30);
+        this.setVelocityX(-150); //speed bullet in X axe
     }
 
     preUpdate(time, delta){ // reset bullet out of the screen
         super.preUpdate(time, delta);
 
-        if(this.x <= -320){
+        if(this.x <= 100){ // set range for the bullet - for long range and + for short range
             this.setActive(false);
             this.setVisible(false);
         }
