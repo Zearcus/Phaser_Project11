@@ -15,15 +15,19 @@ class Play extends Phaser.Scene {
         this.player = this.createPlayer();
         this.ennemy = this.createEnnemy();
         this.playerSpeed = 200;
+
+        
         this.physics.add.collider(this.player, layers.platformsColliders);
+        this.physics.add.collider(this.ennemy, this.player);
         this.cursors = this.input.keyboard.createCursorKeys();
 
         this.cameras.main.startFollow(this.player);
 
-        this.ennemy.scale = 0.15;
-        this.ennemy.flipX = 1;
+        this.ennemy.scale = 0.80;
 
 
+
+        // key config
         this.playerInput = this.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.Z,
             down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -31,15 +35,12 @@ class Play extends Phaser.Scene {
             right: Phaser.Input.Keyboard.KeyCodes.D,
             shift: Phaser.Input.Keyboard.KeyCodes.SHIFT,
             shoot: Phaser.Input.Keyboard.KeyCodes.F
-            
-
         })
 
         this.bulletGroup = new bulletGroup(this);
-
-
-        
     }
+
+    // map part initialisation
 
     createMap() {
         const map = this.make.tilemap({ key: "map", tileWidth: 32, tileHeight: 16 });
@@ -62,29 +63,27 @@ class Play extends Phaser.Scene {
 
     }
 
+    // character initilisation
+
     createPlayer() {
         let player = this.physics.add.sprite(20, 300, 'player');
-
         return player;
     }
 
     createEnnemy() {
-        let lifPoint = 10 ;
+        // let lifPoint = 10 ;
         let ennemy = this.physics.add.sprite(200, 300, 'ennemy');
 
         return ennemy;
     }
 
-    shootBullet(){
-        this.bulletGroup.fireBullet(this.ennemy.x, this.ennemy.y - 10);
-    }
-
-
 
     update() {
-       
+        
         this.player.setVelocityX(0);
         this.player.setVelocityY(0);
+        this.ennemy.setVelocityX(0);
+        this.ennemy.setVelocityY(0);
 
         if (this.playerInput.left.isDown) { // left control
             this.player.flipX = 1;
@@ -121,6 +120,10 @@ class Play extends Phaser.Scene {
         }
        
     }
+
+    shootBullet(){
+        this.bulletGroup.fireBullet(this.ennemy.x - 28, this.ennemy.y + 25);
+    }
 }
 
 class bulletGroup extends Phaser.Physics.Arcade.Group {
@@ -130,7 +133,7 @@ class bulletGroup extends Phaser.Physics.Arcade.Group {
 
         this.createMultiple({
             classType: Bullet,
-            frameQuantity: 1,
+            frameQuantity: 2,
             active: false,
             visible: false,
             key: 'bullet'
@@ -138,17 +141,16 @@ class bulletGroup extends Phaser.Physics.Arcade.Group {
     }
 
     fireBullet(x, y){ // fire condition
-        
         const bullet = this.getFirstDead(false);
         if(bullet){
             bullet.fire(x, y);
         }
     }
-   
+    
 
 }
 
-class Bullet extends Phaser.Physics.Arcade.Sprite{
+class Bullet extends Phaser.Physics.Arcade.Sprite{ // sprite option bullet
     
     constructor(scene, x, y){
         super(scene, x, y, 'bullet');
@@ -156,17 +158,16 @@ class Bullet extends Phaser.Physics.Arcade.Sprite{
 
     fire(x, y){ // fire option
         this.body.reset(x, y);
-
+        this.scale = 0.1;
         this.setActive(true);
         this.setVisible(true);
-
-        this.setVelocityX(-150); //speed bullet in X axe
+        this.setVelocityX(-250); //speed bullet in X axe
     }
 
     preUpdate(time, delta){ // reset bullet out of the screen
         super.preUpdate(time, delta);
 
-        if(this.x <= 100){ // set range for the bullet - for long range and + for short range
+        if(this.x <= -50){ // set range for the bullet - for long range and + for short range
             this.setActive(false);
             this.setVisible(false);
         }
