@@ -1,0 +1,19 @@
+//                             Présentation                      //
+Le but du jeu : Vous êtes un ingénieur dans une zone d'un parl d'attraction le but est de trouver 
+et de récupérer la clé pour pouvoir sortir mais attention à la tourelle à pop-corn qui vous observe !
+
+
+
+
+
+
+//                             Description                       //
+Lest touches : 
+
+Z : avancer
+Q : aller à gauche
+S : reculer
+D : aller à droite
+shift : courir
+E : prendre
+
