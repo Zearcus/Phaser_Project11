@@ -1,0 +1,27 @@
+{
+	"generator_info": "Shape definitions generated with PhysicsEditor. Visit https://www.codeandweb.com/physicseditor",
+	"playerCC": {
+		"type": "fromPhysicsEditor",
+		"label": "player",
+		"isStatic": false,
+		"density": 0,
+		"restitution": 0,
+		"friction": 0,
+		"frictionAir": 0,
+		"frictionStatic": 0,
+		"collisionFilter": {
+			"group": 0,
+			"category": 1,
+			"mask": 255
+		},
+		"fixtures": [
+			{
+				"label": "player",
+				"isSensor": false,
+				"vertices": [
+					[ { "x":34, "y":61 }, { "x":21, "y":20 }, { "x":9, "y":61 } ]
+				]
+			}
+		]
+	}
+}

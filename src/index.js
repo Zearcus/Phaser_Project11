@@ -4,7 +4,7 @@ import Phaser from 'phaser';
 
 import PlayScene from './scenes/Play';
 import PreloadScene from './scenes/Preload';
-
+//import MainMenu from './menu.ts'
 
 
 const WIDTH = 800;
@@ -26,12 +26,20 @@ const config = {
   ...SHARED_CONFIG,
   pixelArt: true,
   physics: {
-    default: 'arcade',
+    default: 'arcade', 
     arcade: {
-      debug: true,
+      //debug: true,
     }
   },
   scene: initScenes()
 }
+
+export function ConvertXCartesianToIsometric(x, y) {     
+  var tempX = x - y / 1.108;      
+  return tempX }  
+
+export function ConvertYCartesianToIsometric(x, y) {     
+  var tempY = (x + y) / 2;      
+  return tempY }
 
 new Phaser.Game(config);
